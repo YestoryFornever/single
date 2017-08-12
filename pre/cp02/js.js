@@ -5,4 +5,4 @@ function prison(){
 prison();
 console.log( prisoner2 );
 console.log( prisoner1 );
-
+console.log('第二章看看就好，没啥不能理解的。')
