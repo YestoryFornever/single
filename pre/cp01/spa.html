@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>SPA Chapter 1</title>
+	<style type="text/css">
+		body{
+			width:100%;
+			height:100%;
+			overflow:hidden;
+			background-color:#777;
+		}
+		#spa{
+			position:absolute;
+			top:8px;
+			left:8px;
+			bottom:8px;
+			right:8px;
+			border-radius:8px 8px 0 8px;
+			background-color:#fff;
+		}
+		.spa-slider{
+			position:absolute;
+			bottom:0;
+			right:2px;
+			width:300px;
+			height:16px;
+			cursor:pointer;
+			border-radius:8px 0 0 0;
+			background-color:#f00;
+		}
+	</style>
+	<script src="jquery-3.2.1.js" type="text/javascript"></script>
+	<script type="text/javascript">
+		/* jslint 
+			browser:true,
+			continue:true,
+			devel:true,
+			indent:2,
+			maxerr:50,
+			newcap:true,
+			nomen:true,
+			plusplus:true,
+			regexp:true,
+			sloppy:true,
+			vars:true,
+			white:true
+		*/
+		// 配置模块
+		var spa = (function($){
+			// 声明模块变量
+			var configMap = {
+					extended_height: 434,
+					extended_title: '收起',
+					retracted_height: 16,
+					retracted_title: '扩展',
+					template_html: '<div class="spa-slider"><\/div>'
+				},
+				$chatSlider,
+				toggleSlider, onClickSlider, initModule;
+			// fn切换聊天滑块
+			toggleSlider = function(){
+				var slider_height = $chatSlider.height();
+				if(slider_height === configMap.retracted_height){
+					$chatSlider
+						.animate({height:configMap.extended_height})
+						.attr('title',configMap.extended_title);
+					return true;
+				}else if(slider_height === configMap.extended_height){
+					$chatSlider
+						.animate({height:configMap.retracted_height})
+						.attr('title',configMap.retracted_title);
+				}
+				return false;
+			};
+			// fn接收用户点击事件
+			onClickSlider = function(event){
+				toggleSlider();
+				return false;
+			};
+			// fn初始化应用状态
+			initModule = function($container){
+				$container.html( configMap.template_html );
+				$chatSlider = $container.find( '.spa-slider' );
+				$chatSlider
+					.attr( 'title', configMap.retracted_title )
+					.click( onClickSlider );
+			};
+			return { initModule : initModule };
+		}( jQuery ));
+		$(function(){
+			spa.initModule( jQuery('#spa') );
+		});
+	</script>
+</head>
+<body>
+	<div id="spa"></div>
+</body>
+</html>
