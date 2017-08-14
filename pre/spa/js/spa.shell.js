@@ -19,14 +19,19 @@ spa.shell = (function(){
 				<div class="spa-shell-chat"></div>\
 				<div class="spa-shell-modal"></div>\
 			',
-		chat_extend_time:1000,
+		chat_extend_time:250,
 		chat_retract_time:300,
 		chat_extend_height:450,
-		chat_retract_height:15
+		chat_retract_height:15,
+		chat_extend_title:'click to retract',
+		chat_retract_title:'click to extend'
 	},
-	stateMap = { $container:null },
+	stateMap = { 
+		$container:null,
+		is_chat_retracted:true
+	},
 	jqueryMap = {},
-	setJqueryMap, toggleChat, initModule;
+	setJqueryMap, toggleChat, onClickChat, initModule;
 	// END MODULE SCOPE VARIABLES
 	// BEIGN UTILITY METHODS
 	// END UTILITY METHODS
@@ -52,6 +57,10 @@ spa.shell = (function(){
 				{ height:configMap.chat_extend_height },
 				configMap.chat_extend_time,
 				function(){
+					jqueryMap.$chat.attr(
+						'title',configMap.chat_extended_title
+					);
+					stateMap.is_chat_retracted = false;
 					if( callback ){
 						callback( jqueryMap.$chat );
 					}
@@ -63,6 +72,10 @@ spa.shell = (function(){
 			{ height:configMap.chat_retract_height },
 			configMap.chat_retract_time,
 			function(){
+				jqueryMap.$chat.attr(
+					'title',configMap.chat_retract_title
+				);
+				stateMap.is_chat_retracted = true;
 				if( callback ) {callback( jqueryMap.$chat ); }
 			}
 		);
@@ -70,13 +83,20 @@ spa.shell = (function(){
 	}
 	// END DOM METHODS
 	// BEGIN EVENT HANDLES
+	onClickChat = function( event ){
+		toggleChat( stateMap.is_chat_retracted );
+		return false;
+	}
 	// END EVENT HANDLES
 	initModule = function( $container ){
 		stateMap.$container = $container;
 		$container.html( configMap.main_html );
 		setJqueryMap();
-		setTimeout(function(){toggleChat(true);},3000);
-		setTimeout(function(){toggleChat(false);},8000);
+		// 初始化聊天滑块并绑定点击事件
+		stateMap.is_chat_retracted = true;
+		jqueryMap.$chat
+			.attr( 'title', configMap.chat_retract_title)
+			.click( onClickChat );
 	};
 
 	return { initModule: initModule}
