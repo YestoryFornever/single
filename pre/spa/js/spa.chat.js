@@ -30,20 +30,21 @@ spa.chat = (function(){
 	 *		* false requested state not achived
 	 * Throws: none;
 	 */
-	// 公共方法
-	// example:spa.chat.configModule({ slider_open_em:18 });
-	// purpose:初始化配置
-	// arguments:
-	//  * set_chat_anchor - 一个修改URI的回调函数,如果请求未成功一定要返回false
-	//  * chat_model - 提供与消息实例交互的方法
-	//  * people_model - 提供与管理人员列表交互的方法
-	//  * slider_* 设置 - 这部分全部是可选配置
-	//		详见mapConfig.settable_map
-	//		Example: slider_open_em 是聊天窗口的展开高度
-	// action:
-	//	内部配置数据结构(configMap)根据提供的arguments进行更新
-	// returns:true
-	// Throws:js错误对象
+	/* 公共方法
+	 * example:spa.chat.configModule({ slider_open_em:18 });
+	 * purpose:初始化配置
+	 * arguments:
+	 *  * set_chat_anchor - 一个修改URI的回调函数,如果请求未成功一定要返回false
+	 *  * chat_model - 提供与消息实例交互的方法
+	 *  * people_model - 提供与管理人员列表交互的方法
+	 *  * slider_* 设置 - 这部分全部是可选配置
+	 *    	详见mapConfig.settable_map
+	 *    	Example: slider_open_em 是聊天窗口的展开高度
+	 * action:
+	 *    内部配置数据结构(configMap)根据提供的arguments进行更新
+	 * returns:true
+	 * Throws:js错误对象
+	 */
 	configModule = function( input_map ) {
 		spa.util.setConfigMap({
 			input_map: input_map,

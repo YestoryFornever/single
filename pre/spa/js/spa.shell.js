@@ -85,13 +85,14 @@ spa.shell = (function(){
 	 * Example: setChatAnchor('closed');
 	 * purpose: 更改聊天模块的锚链接
 	 * arguments: 
-	 *  * $append_target ( example: $('#div_id') );
-	 *		jquery dom 容器  
+	 *  * position_type - 'closed'/'opened' 
 	 * action: 
-	 *	将chat滑块添加到服务容器中,
-	 *	初始化元素,
-	 *	注册事件,
-	 *	提供用户聊天接口
+	 *	尝试将uri锚点参数改为requested的值
+	 * returns:
+	 *  * true chat锚点值更改时;
+	 *  * false chat锚点值未更改;
+	 * throw:
+	 *	none
 	 */
 	toggleChat = function( do_extend, callback){
 		var 
