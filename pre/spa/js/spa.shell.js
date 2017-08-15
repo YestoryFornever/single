@@ -22,21 +22,13 @@ spa.shell = (function(){
 				<div class="spa-shell-chat"></div>\
 				<div class="spa-shell-modal"></div>\
 			',
-		chat_extend_time:250,
-		chat_retract_time:300,
-		chat_extend_height:450,
-		chat_retract_height:15,
-		chat_extend_title:'click to retract',
-		chat_retract_title:'click to extend'
 	},
 	stateMap = { 
-		$container:null,
 		anchor_map:{},
-		is_chat_retracted:true
 	},
 	jqueryMap = {},
 	copyAnchorMap,
-	setJqueryMap, toggleChat, onClickChat, 
+	setJqueryMap, 
 	changeAnchorPart, onHashchange,
 	setChatAnchor, initModule;
 	// END MODULE SCOPE VARIABLES
@@ -46,6 +38,12 @@ spa.shell = (function(){
 	};
 	// END UTILITY METHODS
 	// BEGIN DOM METHODS
+	setJqueryMap = function(){
+		var $container = stateMap.$container;
+		jqueryMap = {
+			$container:$container
+		}
+	};
 	changeAnchorPart = function(arg_map){
 		var 
 			anchor_map_revise = copyAnchorMap(),
@@ -75,67 +73,6 @@ spa.shell = (function(){
 		}
 		return bool_return;
 	}
-	setJqueryMap = function(){
-		var $container = stateMap.$container;
-		jqueryMap = {
-			$container:$container
-		}
-	};
-	/* Begin callback method /setChatAnchor/
-	 * Example: setChatAnchor('closed');
-	 * purpose: 更改聊天模块的锚链接
-	 * arguments: 
-	 *  * position_type - 'closed'/'opened' 
-	 * action: 
-	 *	尝试将uri锚点参数改为requested的值
-	 * returns:
-	 *  * true chat锚点值更改时;
-	 *  * false chat锚点值未更改;
-	 * throw:
-	 *	none
-	 */
-	toggleChat = function( do_extend, callback){
-		var 
-			px_chat_ht = jqueryMap.$chat.height(),
-			is_open = px_chat_ht === configMap.chat_extend_height,
-			is_closed = px_chat_ht === configMap.chat_retract_height,
-			is_sliding = ! is_open && !is_closed;
-		if( is_sliding ){ return false; }
-		if( do_extend ){
-			jqueryMap.$chat.animate(
-				{ height:configMap.chat_extend_height },
-				configMap.chat_extend_time,
-				function(){
-					jqueryMap.$chat.attr(
-						'title',configMap.chat_extended_title
-					);
-					stateMap.is_chat_retracted = false;
-					if( callback ){
-						callback( jqueryMap.$chat );
-					}
-				}
-			);
-			return true;
-		}
-		jqueryMap.$chat.animate(
-			{ height:configMap.chat_retract_height },
-			configMap.chat_retract_time,
-			function(){
-				jqueryMap.$chat.attr(
-					'title',configMap.chat_retract_title
-				);
-				stateMap.is_chat_retracted = true;
-				if( callback ) {callback( jqueryMap.$chat ); }
-			}
-		);
-		return true;
-	}
-	// END DOM METHODS
-	// BEGIN EVENT HANDLES
-	//onClickChat = function( event ){
-	//	toggleChat( stateMap.is_chat_retracted );
-	//	return false;
-	//}
 	onHashchange = function(event){
 		var 
 			is_ok = true,
@@ -167,8 +104,8 @@ spa.shell = (function(){
 					is_ok = spa.chat.setSliderPosition('closed');
 					break;
 				default:
-					toggleChat(false);
-					delete anchor_map_previous.chat;
+					spa.chat.setSliderPosition('closed');
+					delete anchor_map_proposed.chat;
 					$.uriAnchor.setAnchor( anchor_map_proposed,null,true);
 			}
 		}
@@ -184,32 +121,35 @@ spa.shell = (function(){
 		return false;
 	}
 	
+	/* Begin callback method /setChatAnchor/
+	 * Example: setChatAnchor('closed');
+	 * purpose: 更改聊天模块的锚链接
+	 * arguments: 
+	 *  * position_type - 'closed'/'opened' 
+	 * action: 
+	 *	尝试将uri锚点参数改为requested的值
+	 * returns:
+	 *  * true chat锚点值更改时;
+	 *  * false chat锚点值未更改;
+	 * throw:
+	 *	none
+	 */
 	setChatAnchor = function (position_type) {
 		return changeAnchorPart({ chat: position_type });
 	};
 
-	onClickChat = function(event) {
-		changeAnchorPart({
-			chat:( stateMap.is_chat_retracted ? 'open' : 'closed' )
-		});
-		return false;
-	};
 	// END EVENT HANDLES
 	initModule = function( $container ){
 		stateMap.$container = $container;
 		$container.html( configMap.main_html );
 		setJqueryMap();
 		// 初始化聊天滑块并绑定点击事件
-		stateMap.is_chat_retracted = true;
-		jqueryMap.$chat
-			.attr( 'title', configMap.chat_retract_title )
-			.click( onClickChat );
 		$.uriAnchor.configModule({
 			schema_map: configMap.anchor_schema_map
 		});
 		// configure and initialize feature modules
 		spa.chat.configModule({
-			set_chat_anchor: setAnchor,
+			set_chat_anchor: setChatAnchor,
 			chat_model: spa.module.chat,
 			people_model: spa.module.people
 		});
