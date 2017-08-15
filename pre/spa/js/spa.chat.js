@@ -35,6 +35,8 @@ spa.chat = (function(){
 		slider_close_time:250,
 		slider_opened_em:16,
 		slider_closed_em:2,
+		slider_opened_min_em:10,
+		window_height_min_em:20,
 		slider_opened_title:'close',
 		slider_closed_title:'open',
 
@@ -50,7 +52,16 @@ spa.chat = (function(){
 		slider_closed_px:0,
 		slider_opened_px:0
 	},
-	jqueryMap={}, configModule, initModule;
+	jqueryMap={}, 
+	setJqueryMap, 
+	getEmSize, 
+	setPxSizes, 
+	setSliderPosition, 
+	onClickToggle, 
+	configModule, 
+	initModule,
+	removeSlider,
+	handleResize;
 
 	getEmSize = function( elem ){
 		return Number(
@@ -75,10 +86,17 @@ spa.chat = (function(){
 	};
 
 	setPxSizes = function(){
-		var px_per_em, opened_height_em,
-			px_per_em = getEmSize( jqueryMap.$slider.get(0) );
+		var px_per_em, window_height_em, opened_height_em;
+		px_per_em = getEmSize( jqueryMap.$slider.get(0) );
 		
-		opened_height_em = configMap.slider_opened_em;
+		window_height_em = Math.floor(
+			( $(window).height() / px_per_em ) + 0.5
+		);
+
+		opened_height_em 
+			= window_height_em > configMap.window_height_min_em 
+			? configMap.slider_opened_em 
+			: configMap.slider_opened_min_em;
 
 		stateMap.px_per_em = px_per_em;
 		stateMap.slider_closed_px = configMap.slider_closed_em * px_per_em;
@@ -175,6 +193,31 @@ spa.chat = (function(){
 		});
 		return true;
 	};
+
+	removeSlider = function(){
+		if( jqueryMap.$slider ){
+			jqueryMap.$slider.remove();
+			jqueryMap = {};
+		}
+		stateMap.$append_target = null;
+		stateMap.position_type = 'closed';
+
+		configMap.chat_model = null;
+		configMap.people_model = null;
+		configMap.set_chat_anchor = null;
+
+		return true;
+	}
+
+	handleResize = function(){
+		if( !jqueryMap.$slider ){return false;}
+		setPxSizes();
+		if( stateMap.position_type === 'opened'){
+			jqueryMap.$slider.css({ height: stateMap.slider_opened_px});
+		}
+		return true;
+	}
+
 	/*
 	 * example: spa.chat.initModule( $('#div_id') );
 	 * purpose:
@@ -204,6 +247,8 @@ spa.chat = (function(){
 	return {
 		setSliderPosition: setSliderPosition,
 		configModule: configModule,
-		initModule: initModule
+		initModule: initModule,
+		removeSlider: removeSlider,
+		handleResize: handleResize
 	};
 })();
