@@ -1,0 +1,1 @@
+spa.module = (function(){return {}})();
