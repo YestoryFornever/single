@@ -81,7 +81,18 @@ spa.shell = (function(){
 			$chat:$container.find('.spa-shell-chat')
 		}
 	};
-
+	/* Begin callback method /setChatAnchor/
+	 * Example: setChatAnchor('closed');
+	 * purpose: 更改聊天模块的锚链接
+	 * arguments: 
+	 *  * $append_target ( example: $('#div_id') );
+	 *		jquery dom 容器  
+	 * action: 
+	 *	将chat滑块添加到服务容器中,
+	 *	初始化元素,
+	 *	注册事件,
+	 *	提供用户聊天接口
+	 */
 	toggleChat = function( do_extend, callback){
 		var 
 			px_chat_ht = jqueryMap.$chat.height(),
