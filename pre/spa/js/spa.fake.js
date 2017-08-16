@@ -1,0 +1,1 @@
+spa.fake = (function(){return {};})();
