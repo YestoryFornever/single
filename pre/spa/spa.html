@@ -26,7 +26,28 @@
 	<script src="js/spa.chat.js"></script>
 	<script src="js/spa.avtr.js"></script>
 	<script>
-		$(function(){spa.initModule( $('#spa') ); });
+		$(function(){ spa.initModule( $('#spa') ); });
+		/*$(function(){ 
+			$('body').append('<div id="spa-chat-list-box"/>');
+			var $listbox = $( '#spa-chat-list-box' );
+
+			$listbox.css({
+				position: 'absolute',
+				'z-index':3,
+				top:50,
+				left:50,
+				width:50,
+				height:50,
+				border:'2px solid black',
+				background:'#fff'
+			});
+			$.gevent.publish(
+				'spa-listchange',
+				[{list_text:'the list is here'}]
+			);
+			$.listbox.remove();
+			$.gevent.publish('spa-list-change',[{}]);
+		});*/
 	</script>
 </head>
 <body>

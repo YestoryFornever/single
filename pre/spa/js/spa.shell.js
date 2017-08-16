@@ -164,8 +164,8 @@ spa.shell = (function(){
 		// configure and initialize feature modules
 		spa.chat.configModule({
 			set_chat_anchor: setChatAnchor,
-			chat_model: spa.module.chat,
-			people_model: spa.module.people
+			chat_model: spa.model.chat,
+			people_model: spa.model.people
 		});
 		spa.chat.initModule( jqueryMap.$container );
 		$(window)
