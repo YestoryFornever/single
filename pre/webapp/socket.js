@@ -5,11 +5,13 @@ let countUp,
 
 	app = express(),
 	server = http.createServer(app),
+	io = socketIo.listen(server),
 	countIdx = 0;
 
 countUp = function(){
 	countIdx++;
 	console.log(countIdx);
+	io.sockets.send(countIdx);
 }
 
 app.use( express.static(__dirname+'/public') );
