@@ -11,25 +11,24 @@ let router = express.Router();
 router.get('/', (req, res, next)=>{
 	res.redirect('./spa.html');
 });
-router.get('/user/list',(req,res,next)=>{
+router.all('/user/*?',(req,res,next)=>{
 	res.contentType('json');
+	next();
+});
+router.get('/user/list',(req,res,next)=>{
 	res.send({title:'user list'});
 });
 router.post('/user/create',(req,res,next)=>{
-	res.contentType('json');
 	res.send({title:'user create'});
 });
 router.get('/user/read/:id([0-9]+)',(req,res,next)=>{
-	res.contentType('json');
-	res.send({title:'user with id' + req.params.id + ' found'});
+	res.send({title:'user with id ' + req.params.id + ' found'});
 });
 router.post('/user/update/:id([0-9]+)',(req,res,next)=>{
-	res.contentType('json');
-	res.send({title:'user with id' + req.params.id + ' updated'});
+	res.send({title:'user with id ' + req.params.id + ' updated'});
 });
 router.get('/user/delete/:id([0-9]+)',(req,res,next)=>{
-	res.contentType('json');
-	res.send({title:'user with id' + req.params.id + ' deleted'});
+	res.send({title:'user with id ' + req.params.id + ' deleted'});
 });
 
 app.use( bodyParser.json() );
