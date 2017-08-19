@@ -10,6 +10,7 @@
 	<link rel="stylesheet" href="css/spa.chat.css" type="text/css"/>
 	<link rel="stylesheet" href="css/spa.avtr.css" type="text/css"/>
 
+	<script src="socket.io/socket.io.js"></script>
 	<script src="js/jq/taffy.js"></script>
 	<script src="js/jq/jquery-1.9.1.js"></script>
 	<script src="js/jq/jquery.uriAnchor-1.1.3.js"></script>
@@ -27,27 +28,6 @@
 	<script src="js/spa.avtr.js"></script>
 	<script>
 		$(function(){ spa.initModule( $('#spa') ); });
-		/*$(function(){ 
-			$('body').append('<div id="spa-chat-list-box"/>');
-			var $listbox = $( '#spa-chat-list-box' );
-
-			$listbox.css({
-				position: 'absolute',
-				'z-index':3,
-				top:50,
-				left:50,
-				width:50,
-				height:50,
-				border:'2px solid black',
-				background:'#fff'
-			});
-			$.gevent.publish(
-				'spa-listchange',
-				[{list_text:'the list is here'}]
-			);
-			$.listbox.remove();
-			$.gevent.publish('spa-list-change',[{}]);
-		});*/
 	</script>
 </head>
 <body>

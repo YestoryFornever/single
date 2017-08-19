@@ -343,7 +343,7 @@ spa.chat = (function(){
 				select_class = 'spa-x-select';
 			}
 			list_html
-				+= '<div class="spa-chat-list-name'
+				+= '<div class="spa-chat-list-name '
 				+ select_class + '" data-id="' + person.id + '">'
 				+ spa.util_b.encodeHtml( person.name ) + '</div>';
 		});
