@@ -102,10 +102,10 @@ spa.chat = (function(){
 			$toggle:$slider.find('.spa-chat-toggle'),
 			$title:$slider.find('.spa-chat-title'),
 			$sizer:$slider.find('.spa-chat-sizer'),
-			$list_box:$slider.find('.spa-chat-list_box'),
+			$list_box:$slider.find('.spa-chat-list-box'),
 			$msg_log:$slider.find('.spa-chat-msg-log'),
 			$msg_in:$slider.find('.spa-chat-msg-in'),
-			$input:$slider.find('.spa-chat-input input[type=text]'),
+			$input:$slider.find('.spa-chat-msg-in input[type=text]'),
 			$send:$slider.find('.spa-chat-msg-send'),
 			$form:$slider.find('.spa-chat-msg-form'),
 			$window:$(window),
@@ -253,7 +253,7 @@ spa.chat = (function(){
 	}
 	
 	scrollChat = function(){
-		var $img_log = jqueryMap.$msg_log;
+		var $msg_log = jqueryMap.$msg_log;
 		$msg_log.animate({
 			scrollTop:$msg_log.prop('scrollHeight')-$msg_log.height()
 		},150);
@@ -271,7 +271,7 @@ spa.chat = (function(){
 	}
 
 	writeAlert = function( alert_text ){
-		jqueryMap.$img_log.append(
+		jqueryMap.$msg_log.append(
 			'<div class="spa-chat-msg-log-alert">'
 			+ spa.util_b.encodeHtml(alert_text)
 			+ '</div>'
@@ -330,7 +330,7 @@ spa.chat = (function(){
 	};
 
 	onListchange = function (event){
-		var vlist_html = String(),
+		var list_html = String(),
 			people_db = configMap.people_model.get_db(),
 			chatee = configMap.chat_model.get_chatee();
 
