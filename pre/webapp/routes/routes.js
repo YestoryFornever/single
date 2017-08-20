@@ -1,5 +1,7 @@
 let express = require('express'),
-	router = express.Router();
+	router = express.Router()
+	loadSchema,
+	fs = require('fs');
 
 let mongodb = require('mongodb'),
 	mongoServer = new mongodb.Server(
@@ -13,12 +15,27 @@ let mongodb = require('mongodb'),
 		{safe:true}
 	),
 	makeMongoId = mongodb.ObjectID,
-	objTypeMap = {'user':{}};
+	objTypeMap = {'user':{}},;
 
 dbHandle.open(function(){
 	console.log('** Connected to MongoDB **');
 });
 	
+loadSchema = function( schema_name, schema_path ){
+	fs.readFile( schema_path,'utf-8',(err,data)=>{
+		objTypeMap[ schema_name ] = JSON.parse( data );
+	});
+};
+(function(){
+	var schema_name, schema_path;
+	for(schema_name in objTypeMap){
+		if( objTypeMap.hasOwnProperty( schema_name ) ){
+			schema_path = __dirname + '/' + schema_name + '.json';
+			loadSchema( schema_name, schema_path );
+		}
+	}
+})();
+
 router.get('/', (req, res, next)=>{
 	res.redirect('./spa.html');
 });
