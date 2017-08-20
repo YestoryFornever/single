@@ -22,7 +22,16 @@ router.all('/:obj_type/*?',(req,res,next)=>{
 	next();
 });
 router.get('/:obj_type/list',(req,res,next)=>{
-	res.send({title:req.params.obj_type + ' list'});
+	dbHandle.collection(
+		req.params.obj_type,
+		(outer_error,collection)=>{
+			collection.find().toArray(
+				(inner_error,map_list)=>{
+					res.send(map_list);
+				}
+			);
+		}
+	);
 });
 router.post('/:obj_type/create',(req,res,next)=>{
 	res.send({title:req.params.obj_type + ' create'});
