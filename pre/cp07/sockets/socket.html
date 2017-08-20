@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>socket</title>
+	<script src="/js/jq/jquery-1.9.1.js"></script>
+	<script src="/socket.io/socket.io.js"></script>
+	<script src="/js/data.js" id="script_a"></script>
+</head>
+<body>
+	<script>
+		$(function(){
+			$('body').html(b);
+		});
+		// io.connect().on('xxx',function(){alert(1)});
+		io.connect('http://localhost:9999').on('script',function(path){
+			$('#script_a').remove();
+			// console.log(path);
+			$('head').append(
+				'<script id="script_a" src="'
+				+path+
+				'"></src'+'ipt>'
+			);
+			$('body').html(b);
+		});
+	</script>
+</body>
+</html>
