@@ -12,7 +12,8 @@ let mongodb = require('mongodb'),
 		mongoServer,
 		{safe:true}
 	),
-	makeMongoId = mongodb.ObjectID;
+	makeMongoId = mongodb.ObjectID,
+	objTypeMap = {'user':{}};
 
 dbHandle.open(function(){
 	console.log('** Connected to MongoDB **');
@@ -23,7 +24,11 @@ router.get('/', (req, res, next)=>{
 });
 router.all('/:obj_type/*?',(req,res,next)=>{
 	res.contentType('json');
-	next();
+	if( objTypeMap[req.params.obj_type]){
+		next();
+	}else{
+		res.send({error_msg:req.params.obj_type+'is not a valid object type'});
+	}
 });
 router.get('/:obj_type/list',(req,res,next)=>{
 	dbHandle.collection(
