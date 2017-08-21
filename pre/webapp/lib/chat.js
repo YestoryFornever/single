@@ -71,7 +71,17 @@ chatObj = {
 						}
 					);
 				});
-				socket.on('updatechat',function(){});
+				socket.on('updatechat',function(chat_map){
+					if(chatterMap.hasOwnProperty(chat_map.dest_id)){
+						chatterMap[ chat_map.dest_id ]
+							.emit('updatechat',chat_map);
+					}else{
+						socket.emit('updatechat',{
+							sender_id: chat_map.sender_id,
+							msg_text: chat_map.dest_name + ' has gone offline.'
+						});
+					}
+				});
 				socket.on('leavechat',function(){});
 				socket.on('disconnect',function(){});
 				socket.on('updateavatar',function(){});
