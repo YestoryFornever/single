@@ -11,7 +11,7 @@ let http = require('http'),
 app.use( bodyParser.json() );
 app.use( methodOverride('X-HTTP-Method-Override') );
 app.use( express.static(__dirname+'/public') );
-app.use('/api',routes);// '/'可省略，挂载功能默认就是使用slash
+app.use('/',routes);// '/'可省略，挂载功能默认就是使用slash
 
 if (app.get('env') === 'development') {
 	app.use( morgan('combined') );

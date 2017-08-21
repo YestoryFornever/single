@@ -50,7 +50,7 @@ checkSchema = function( obj_type, obj_map, callback ){
 router.get('/', (req, res, next)=>{
 	res.redirect('./spa.html');
 });
-router.all('/:obj_type/*?',(req,res,next)=>{
+router.all('/api/:obj_type/*?',(req,res,next)=>{
 	res.contentType('json');
 	if( objTypeMap[req.params.obj_type]){
 		next();
@@ -58,7 +58,7 @@ router.all('/:obj_type/*?',(req,res,next)=>{
 		res.send({error_msg:req.params.obj_type+'is not a valid object type'});
 	}
 });
-router.get('/:obj_type/list',(req,res,next)=>{
+router.get('/api/:obj_type/list',(req,res,next)=>{
 	dbHandle.collection(
 		req.params.obj_type,
 		(outer_error,collection)=>{
@@ -70,7 +70,7 @@ router.get('/:obj_type/list',(req,res,next)=>{
 		}
 	);
 });
-router.post('/:obj_type/create',(req,res,next)=>{
+router.post('/api/:obj_type/create',(req,res,next)=>{
 	var obj_type = req.params.obj_type,
 		obj_map = req.body;
 	checkSchema(
@@ -99,7 +99,7 @@ router.post('/:obj_type/create',(req,res,next)=>{
 		}
 	);
 });
-router.get('/:obj_type/read/:id([0-9]+)',(req,res,next)=>{
+router.get('/api/:obj_type/read/:id([0-9]+)',(req,res,next)=>{
 	// res.send({title:req.params.obj_type + ' with id ' + req.params.id + ' found'});
 	let find_map = { _id: makeMongoId( req.params.id ) };
 	dbHandle.collection(
@@ -114,7 +114,7 @@ router.get('/:obj_type/read/:id([0-9]+)',(req,res,next)=>{
 		}
 	);
 });
-router.post('/:obj_type/update/:id([0-9]+)',(req,res,next)=>{
+router.post('/api/:obj_type/update/:id([0-9]+)',(req,res,next)=>{
 	// res.send({title:req.params.obj_type + ' with id ' + req.params.id + ' updated'});
 	let find_map = { _id: makeMongoId( req.params.id )},
 		obj_map = req.body,
@@ -152,7 +152,7 @@ router.post('/:obj_type/update/:id([0-9]+)',(req,res,next)=>{
 		}
 	);
 });
-router.get('/:obj_type/delete/:id([0-9]+)',(req,res,next)=>{
+router.get('/api/:obj_type/delete/:id([0-9]+)',(req,res,next)=>{
 	// res.send({title:req.params.obj_type + ' with id ' + req.params.id + ' deleted'});
 	let find_map = { _id: makeMongoId( req.params.id ) };
 	dbHandle.collection(
