@@ -6,7 +6,8 @@ let http = require('http'),
 	errorHandler = require('errorhandler'),
 	routes = require('./lib/routes'),
 	app = express(),
-	server = http.createServer( app );
+	server = http.createServer( app ),
+	chat = require('./lib/chat');
 
 app.use( bodyParser.json() );
 app.use( methodOverride('X-HTTP-Method-Override') );
@@ -26,5 +27,6 @@ if (app.get('env') === 'production') {
 /*app.get('/',function( req, res ){
 	res.send('Hello express');
 });*/
+chat.connect(server);
 server.listen(9999);
 console.log(9999);
