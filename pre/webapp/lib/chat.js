@@ -111,7 +111,7 @@ chatObj = {
 					);
 					signOut(io,socket.user_id);
 				});
-				socket.on('updateavatar',function(avtr_map.person_id){
+				socket.on('updateavatar',function( avtr_map ){
 					crud.update(
 						'user',
 						{'_id':makeMongoId( avtr_map.person_id )},
