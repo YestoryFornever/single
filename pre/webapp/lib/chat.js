@@ -1,5 +1,6 @@
 var emitUserList,
 	signIn,
+	signOut,
 	chatObj,
     socket = require('socket.io'),
     crud = require('./crud'),
@@ -34,6 +35,18 @@ signIn = function(io, user_map, socket){
 	socket.user_id = user_map._id;
 }
 
+signOut = function(io,user_id){
+	crud.update(
+		'user',
+		{'_id':user_id},
+		{is_online:false},
+		(result_list)=>{
+			emitUserList(io);
+		}
+	);
+	delete chatterMap[user_id];
+}
+
 chatObj = {
     connect:function(server){
         var io = socket.listen(server);
@@ -51,6 +64,10 @@ chatObj = {
 							delete user_map.cid;
 							if(result_list.length > 0){
 								result_map = result_list[0];
+								if(chatterMap[result_map._id]){
+									console.log('user '+result_map.name+' is online');
+									return false;
+								}
 								result_map.cid = cid;
 								signIn(io, result_map, socket);
 							}else{
@@ -82,8 +99,18 @@ chatObj = {
 						});
 					}
 				});
-				socket.on('leavechat',function(){});
-				socket.on('disconnect',function(){});
+				socket.on('leavechat',function(){
+					console.log(
+						'** user %s logged out **', socket.user_id
+					);
+					signOut(io,socket.user_id);
+				});
+				socket.on('disconnect',function(){
+					console.log(
+						'** user %s closed browser window or tab **', socket.user_id
+					);
+					signOut(io,socket.user_id);
+				});
 				socket.on('updateavatar',function(){});
 			});
         return io;

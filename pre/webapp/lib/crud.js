@@ -44,7 +44,7 @@ clearIsOnline = function(){
         {is_online:true},
         {is_online:false},
         (response_map)=>{
-            console.log('All users set to offline', response_map);
+            console.log('All users set to offline');//, response_map);
         }
     );
 };
